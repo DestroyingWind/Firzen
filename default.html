@@ -5,40 +5,14 @@
     <title>square game</title>
 </head>
 <body>
-<canvas id="drawing" width="1600" height="800">the background for the game<canvas>
+<canvas id="drawing" width="1600" height="800">the background for the game</canvas>
+<script type="text/javascript" src="board.js">//plot the board</script>
+<script type="text/javascript" src="define_chess.js">//define all the chess</script>
 <script type="text/javascript">
-    var drawing=document.getElementById("drawing");
-    if(drawing.getContext)
-    {
-        var context=drawing.getContext("2d");
-        // the chessboard
-        context.fillStyle="rgba(127,0,127,0.5)";
-        context.fillRect(600,0,800,800);
-        context.strokeStyle="green";
-        for(var i=0;i<20;i++)
-        {
-            for(var j=0;j<20;j++)
-            {
-                context.strokeRect(600+i*40,j*40,40,40);
-            }
-        }
-        // all the chesses are on the left\
-    }
-</script>
-<script type="text/javascript">
-var Chess=
-{
-    createNew: function ()
-    {
-        chess={};
-        chess.num=0;
-        chess.leng=0;
-        chess.chara[4];
-        chess.rotate=0;
-        chess.reverse=0;
-        return chess;
-    }
-}
+player=new Object;
+create_chesses("red",player);
+//player.chess[5].draw(20,20);
+
 </script>
 </body>
 </html>
