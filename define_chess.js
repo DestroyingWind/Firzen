@@ -1,7 +1,8 @@
 /**
  * Created by firzen on 17-5-24.
  */
-var Chess=
+let chesses=document.getElementById("chesses");
+let Chess=
     {
         createNew: function (color)
         {
@@ -9,6 +10,11 @@ var Chess=
             chess.color=color;
             chess.num=0;              //number of small square contains.
             //the first square set as (0,0);charax and charay mark the shift of other squares.
+            chess.posix=0;
+            chess.posiy=0;
+            chess.last_pox=0;
+            chess.last_poy=0;
+            chess.plotted_flag=0;
             chess.charax=new Array(4);
             chess.charay=new Array(4);
             for(let i=0;i<4;i++)
@@ -19,17 +25,34 @@ var Chess=
             chess.reverse=0;          //whether be reversed (0,1).
             chess.used=0;             //whether be used (0,1).
             chess.draw=draw;          //draw this chess.the upper left of the first square is at (startx,starty).
-            function draw(startx,starty)
+            function draw()
             {
-                let context=drawing.getContext("2d");
-                // the chessboard
-                context.fillStyle="blue";
-                context.strokeStyle="yellow";
+                let context=chesses.getContext("2d");
+                // the chess layer
+                context.fillStyle=this.color;
+                context.strokeStyle="green";
+                if(this.plotted_flag===1)
+                {
+                    for (let i = 0; i < this.num; i++)
+                    {
+                        context.clearRect(this.last_pox + this.charax[i] * 40-5, this.last_poy - this.charay[i]* 40-5, 50, 50);
+                    }
+                }
+                else if(this.plotted_flag>1)
+                {
+                    for (let i = 0; i < this.num; i++)
+                    {
+                        context.clearRect(this.last_pox + this.charax[i] * 40, this.last_poy - this.charay[i] * 40, 40, 40);
+                    }
+                }
                 for(let i=0;i<this.num;i++)
                 {
-                    context.fillRect(startx+this.charax[i]*40, starty-this.charay[i]*40, 40, 40);
-                    context.strokeRect(startx+this.charax[i]*40, starty-this.charay[i]*40, 40, 40)
+                    context.fillRect(this.posix+this.charax[i]*40, this.posiy-this.charay[i]*40, 40, 40);
+                    context.strokeRect(this.posix+this.charax[i]*40, this.posiy-this.charay[i]*40, 40, 40);
                 }
+                this.plotted_flag++;
+                this.last_pox=this.posix;
+                this.last_poy=this.posiy;
                 return "plotted";
             }
             return chess;
@@ -44,14 +67,18 @@ function create_chesses(color,player) {
     //chess 0
     // .
     player.chess[j].num=1;
-    player.chess[j].draw(20,20);
+    player.chess[j].posix=20;
+    player.chess[j].posiy=20;
+    player.chess[j].draw();
     j++;
     //chess 1
     // ..
     player.chess[j].num=2;
     player.chess[j].charax[1]=1;
     player.chess[j].charay[1]=0;
-    player.chess[j].draw(100,20);
+    player.chess[j].posix=100;
+    player.chess[j].posiy=20;
+    player.chess[j].draw();
     j++;
     //chess 2
     // ...
@@ -60,7 +87,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[1]=0;
     player.chess[j].charax[2]=2;
     player.chess[j].charay[2]=0;
-    player.chess[j].draw(220,20);
+    player.chess[j].posix=220;
+    player.chess[j].posiy=20;
+    player.chess[j].draw();
     j++;
     //chess 3
     //  .
@@ -70,7 +99,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[1]=0;
     player.chess[j].charax[2]=1;
     player.chess[j].charay[2]=1;
-    player.chess[j].draw(380,60);
+    player.chess[j].posix=380;
+    player.chess[j].posiy=60;
+    player.chess[j].draw();
     j++;
     //chess 4
     // ....
@@ -81,7 +112,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[2]=0;
     player.chess[j].charax[3]=3;
     player.chess[j].charay[3]=0;
-    player.chess[j].draw(20,100);
+    player.chess[j].posix=20;
+    player.chess[j].posiy=100;
+    player.chess[j].draw();
     j++;
     //chess 5
     //  .
@@ -94,7 +127,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[2]=1;
     player.chess[j].charax[3]=1;
     player.chess[j].charay[3]=2;
-    player.chess[j].draw(220,180);
+    player.chess[j].posix=220;
+    player.chess[j].posiy=180;
+    player.chess[j].draw();
     j++;
     //chess 6
     //  .
@@ -106,7 +141,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[2]=1;
     player.chess[j].charax[3]=2;
     player.chess[j].charay[3]=0;
-    player.chess[j].draw(340,180);
+    player.chess[j].posix=340;
+    player.chess[j].posiy=180;
+    player.chess[j].draw();
     j++;
     //chess 7
     // ..
@@ -118,7 +155,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[2]=1;
     player.chess[j].charax[3]=0;
     player.chess[j].charay[3]=1;
-    player.chess[j].draw(500,60);
+    player.chess[j].posix=500;
+    player.chess[j].posiy=60;
+    player.chess[j].draw();
     j++;
     //chess 8
     //  ..
@@ -130,7 +169,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[2]=1;
     player.chess[j].charax[3]=2;
     player.chess[j].charay[3]=1;
-    player.chess[j].draw(20,220);
+    player.chess[j].posix=20;
+    player.chess[j].posiy=220;
+    player.chess[j].draw();
     j++;
     //chess 9
     // .....
@@ -143,7 +184,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=0;
     player.chess[j].charax[4]=4;
     player.chess[j].charay[4]=0;
-    player.chess[j].draw(140,260);
+    player.chess[j].posix=140;
+    player.chess[j].posiy=260;
+    player.chess[j].draw();
     j++;
     //chess 10
     //  .
@@ -159,7 +202,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=2;
     player.chess[j].charax[4]=1;
     player.chess[j].charay[4]=3;
-    player.chess[j].draw(500,260);
+    player.chess[j].posix=500;
+    player.chess[j].posiy=260;
+    player.chess[j].draw();
     j++;
     //chess 11
     //  .
@@ -175,7 +220,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=2;
     player.chess[j].charax[4]=1;
     player.chess[j].charay[4]=3;
-    player.chess[j].draw(20,420);
+    player.chess[j].posix=20;
+    player.chess[j].posiy=420;
+    player.chess[j].draw();
     j++;
     //chess 12
     //  .
@@ -190,7 +237,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=2;
     player.chess[j].charax[4]=0;
     player.chess[j].charay[4]=1;
-    player.chess[j].draw(140,420);
+    player.chess[j].posix=140;
+    player.chess[j].posiy=420;
+    player.chess[j].draw();
     j++;
     //chess 13
     // ..
@@ -205,7 +254,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=2;
     player.chess[j].charax[4]=0;
     player.chess[j].charay[4]=2;
-    player.chess[j].draw(260,420);
+    player.chess[j].posix=260;
+    player.chess[j].posiy=420;
+    player.chess[j].draw();
     j++;
     //chess 14
     //  .
@@ -219,7 +270,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=0;
     player.chess[j].charax[4]=3;
     player.chess[j].charay[4]=0;
-    player.chess[j].draw(380,340);
+    player.chess[j].posix=380;
+    player.chess[j].posiy=340;
+    player.chess[j].draw();
     j++;
     //chess 15
     //  .
@@ -234,7 +287,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=2;
     player.chess[j].charax[4]=2;
     player.chess[j].charay[4]=0;
-    player.chess[j].draw(20,580);
+    player.chess[j].posix=20;
+    player.chess[j].posiy=580;
+    player.chess[j].draw();
     j++;
     //chess 16
     //   .
@@ -249,7 +304,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=1;
     player.chess[j].charax[4]=2;
     player.chess[j].charay[4]=2;
-    player.chess[j].draw(180,580);
+    player.chess[j].posix=180;
+    player.chess[j].posiy=580;
+    player.chess[j].draw();
     j++;
     //chess 17
     //   .
@@ -264,7 +321,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=1;
     player.chess[j].charax[4]=2;
     player.chess[j].charay[4]=2;
-    player.chess[j].draw(340,580);
+    player.chess[j].posix=340;
+    player.chess[j].posiy=580;
+    player.chess[j].draw();
     j++;
     //chess 18
     //  ..
@@ -279,7 +338,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=2;
     player.chess[j].charax[4]=2;
     player.chess[j].charay[4]=2;
-    player.chess[j].draw(20,740);
+    player.chess[j].posix=20;
+    player.chess[j].posiy=740;
+    player.chess[j].draw();
     j++;
     //chess 19
     //  .
@@ -294,7 +355,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=2;
     player.chess[j].charax[4]=2;
     player.chess[j].charay[4]=1;
-    player.chess[j].draw(180,740);
+    player.chess[j].posix=180;
+    player.chess[j].posiy=740;
+    player.chess[j].draw();
     j++;
     //chess 20
     //  .
@@ -309,7 +372,9 @@ function create_chesses(color,player) {
     player.chess[j].charay[3]=-1;
     player.chess[j].charax[4]=2;
     player.chess[j].charay[4]=0;
-    player.chess[j].draw(340,700);
+    player.chess[j].posix=340;
+    player.chess[j].posiy=700;
+    player.chess[j].draw();
     j++;
 
     return "created";

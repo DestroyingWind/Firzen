@@ -5,12 +5,35 @@
     <title>square game</title>
 </head>
 <body>
-<canvas id="drawing" width="1600" height="800">the background for the game</canvas>
+<canvas id="drawing" width="1600" height="800" style="position: absolute">the background for the game</canvas>
+<canvas id="chesses" width="1600" height="800" style="position: absolute">the chesses layer</canvas>
 <script type="text/javascript" src="board.js">//plot the board</script>
 <script type="text/javascript" src="define_chess.js">//define all the chess</script>
+<script type="text/javascript" src="mouse_recall.js">//contral the mouse event</script>
+<script type="text/javascript" src="valid_determine.js">//judge if the move is valid</script>
 <script type="text/javascript">
-player=new Object;
-create_chesses("red",player);
+    var step=0;
+    var browser=myBrowser();
+    var select_flag=-1;
+    player=new Object;
+    var pla_num=0;
+    var pla_col="red";
+    create_chesses(pla_col,player);
+    window.onload=function()
+    {
+        var coordina=document.getElementById("chesses");
+        coordina.onclick=function(ev)
+        {
+            ev=window.event||ev;
+            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+            var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+            var x = ev.pageX || ev.clientX + scrollX;
+            var y = ev.pageY || ev.clientY + scrollY;
+            //alert(x+" "+y);
+            get_mouse_position(x,y);
+        }
+    }
+
 //player.chess[5].draw(20,20);
 
 </script>

@@ -1,12 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>test</title>
-</head>
-<body>
-<script type="text/javascript">
-    document.write("helloworld!")
-</script>
+    <meta charset=" utf-8">
+    <meta name="author" content="http://www.softwhy.com/" />
+    <title>蚂蚁部落</title>
+    <style type="text/css">
+        *
+        {
+            margin:0px;
+            padding:0px;
+        }
+        #mydiv
+        {
+            width:100px;
+            height:100px;
+            background-color:green;
+            margin:100px;
+        }
+    </style>
+    <head>
+        <script type="text/javascript">
+            window.onload=function()
+            {
+                var odiv=document.getElementById("mydiv");
+                var ospan=document.getElementById("myspan");
+                odiv.onclick=function(ev)
+                {
+                    ev=window.event||ev;
+                    var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+                    var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+                    var x = ev.pageX || ev.clientX + scrollX;
+                    var y = ev.pageY || ev.clientY + scrollY;
+                    ospan.innerHTML="x:"+x+"y:"+y;
+                }
+            }
+        </script>
+    </head>
+<body style="height:1200px;">
+<div id="mydiv"></div>
+<span id="myspan"></span>
 </body>
 </html>
