@@ -34,10 +34,10 @@ function get_mouse_position(x,y)
             let flag=take_place(select_flag,x,y);
             if(flag)
             {
-                player.chess[select_flag].color = pla_col;
+                player.chess[select_flag].erase();
                 player.chess[select_flag].posix = cx * 40 + 600;
                 player.chess[select_flag].posiy = cy * 40;
-                player.chess[select_flag].draw();
+                player.chess[select_flag].plot();
                 player.chess[select_flag].used = 1;
                 select_flag = -1;
                 step++;
@@ -48,10 +48,7 @@ function get_mouse_position(x,y)
     {//on plate
         if (select_flag>=0)
         {
-            player.chess[select_flag].color=pla_col;
-            player.chess[select_flag].draw();
-            player.chess[select_flag].plotted_flag--;
-            select_flag=-1;
+            0;
         }
         else
         {
@@ -68,9 +65,12 @@ function get_mouse_position(x,y)
                     if (judge === true)
                     {
                         select_flag = i;
-                        player.chess[i].color="black";
-                        player.chess[i].draw();
+                        player.chess[i].erase();
+                        player.chess[i].posix=1600;
+                        player.chess[i].posiy=200;
+                        player.chess[i].plot();
                         player.chess[i].plotted_flag--;
+                        button_flag=1;
                         break;
                     }
                 }
@@ -80,3 +80,4 @@ function get_mouse_position(x,y)
         }
     }
 }
+
