@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+//    var username=prompt("Log in as(or register):");
+    $.get("10.138.88.105:5000/api/play/table/home", function (data, status) {
+        alert(data);
+        alert(status);
+    });
+    $.ajax({
+        type: "GET",
+        url: "10.138.88.105:5000/api/play/table/home",
+        dataType: "json",
+        success: function(data){
+            alert(data);
+            console(data);
+        }
+    });
+</script>
+</body>
+</html>
