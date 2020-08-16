@@ -32,6 +32,6 @@ class Board(object):
                 if not this_chess.chess[i, j]:
                     continue
                 forbid_any = [
-
+                    position[0]
                 ]
                 must_one = []
