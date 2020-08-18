@@ -1,27 +1,26 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib.ticker as plticker
 
 
-class chess():
+class chess:
     def __init__(self):
         self.rotate_flag = 0
         self.reverse_flag = 0
-        self.rotate_forbid = False
-        self.reverse_forbid = False
         self.rotate_max = 4
         self.reverse_max = 2
 
-    def reverse(self):
-        if self.reverse_forbid:
+    def __reverse(self):
+        if self.reverse_max == 1:
             return False
         else:
             self.chess = self.chess.T
             self.reverse_flag = (self.reverse_flag + 1) % self.reverse_max
             return True
 
-    def rotate(self):
-        if self.rotate_forbid:
+    def __rotate(self):
+        if self.rotate_max == 1:
             return False
         else:
             ori_shape = self.chess.shape
@@ -32,6 +31,18 @@ class chess():
             self.chess = temp_chess
             self.rotate_flag = (self.rotate_flag + 1) % self.rotate_max
             return True
+
+    def reset(self):
+        for i in range(self.rotate_max - self.rotate_flag - 1):
+            self.__rotate()
+        for i in range(self.reverse_max - self.reverse_flag - 1):
+            self.__reverse()
+
+    def change_to(self, reverse_times=0, rotate_times=0):
+        for i in range((reverse_times - self.reverse_flag) % self.reverse_max):
+            self.__reverse()
+        for i in range((rotate_times - self.rotate_flag) % self.rotate_max):
+            self.__rotate()
 
     def plot_chess(self):
         fig, ax = plt.subplots()
@@ -45,7 +56,10 @@ class chess():
                     color = "w"
                 rec = patches.Rectangle(xy=place, width=1, height=1, color=color)
                 ax.add_patch(rec)
-        plt.axis('equal')
+        loc=plticker.MultipleLocator(base=1)
+        ax.xaxis.set_major_locator(loc)
+        ax.yaxis.set_major_locator(loc)
+        plt.axis([-1,shape[1]+1,-1,shape[0]+1])
         plt.grid()
         plt.show()
 
@@ -57,8 +71,8 @@ class chess0(chess):
         self.chess = np.ones([1, 1], dtype=bool)
         self.count = 1
         super(chess0, self).__init__()
-        self.reverse_forbid = True
-        self.rotate_forbid = True
+        self.reverse_max = 1
+        self.rotate_max = 1
 
 
 class chess1(chess):
@@ -68,7 +82,7 @@ class chess1(chess):
         self.chess = np.ones([1, 2], dtype=bool)
         self.count = 2
         super(chess1, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
         self.rotate_max = 2
 
 
@@ -79,7 +93,7 @@ class chess2(chess):
         self.chess = np.ones([1, 3], dtype=bool)
         self.count = 3
         super(chess2, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
         self.rotate_max = 2
 
 
@@ -92,7 +106,7 @@ class chess3(chess):
         self.chess[0, 0] = 0
         self.count = 3
         super(chess3, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
 
 
 class chess4(chess):
@@ -102,7 +116,7 @@ class chess4(chess):
         self.chess = np.ones([1, 4], dtype=bool)
         self.count = 4
         super(chess4, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
         self.rotate_max = 2
 
 
@@ -129,7 +143,7 @@ class chess6(chess):
         self.chess[0, 2] = 0
         self.count = 4
         super(chess6, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
 
 
 class chess7(chess):
@@ -140,8 +154,8 @@ class chess7(chess):
         self.chess = np.ones([2, 2], dtype=bool)
         self.count = 4
         super(chess7, self).__init__()
-        self.reverse_forbid = True
-        self.rotate_forbid = True
+        self.reverse_max = 1
+        self.rotate_max = 1
 
 
 class chess8(chess):
@@ -164,7 +178,7 @@ class chess9(chess):
         self.chess = np.ones([1, 5], dtype=bool)
         self.count = 5
         super(chess9, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
         self.rotate_max = 2
 
 
@@ -220,7 +234,7 @@ class chess13(chess):
         self.chess[1, 0] = 0
         self.count = 5
         super(chess13, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
 
 
 class chess14(chess):
@@ -249,7 +263,7 @@ class chess15(chess):
         self.chess[1, 2] = 0
         self.count = 5
         super(chess15, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
 
 
 class chess16(chess):
@@ -265,7 +279,7 @@ class chess16(chess):
         self.chess[1, 1] = 0
         self.count = 5
         super(chess16, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
 
 
 class chess17(chess):
@@ -281,7 +295,7 @@ class chess17(chess):
         self.chess[2, 2] = 0
         self.count = 5
         super(chess17, self).__init__()
-        self.reverse_forbid = True
+        self.reverse_max = 1
 
 
 class chess18(chess):
@@ -328,8 +342,8 @@ class chess20(chess):
         self.chess[2, 2] = 0
         self.count = 5
         super(chess20, self).__init__()
-        self.reverse_forbid = True
-        self.rotate_forbid = True
+        self.reverse_max = 1
+        self.rotate_max = 1
 
 
 if __name__ == "__main__":
@@ -339,5 +353,10 @@ if __name__ == "__main__":
         chess14(), chess15(), chess16(), chess17(), chess18(), chess19(), chess20()
     ]
     for i, eachchess in enumerate(chesses):
-        print(i)
-        eachchess.plot_chess()
+        m = eachchess.reverse_max
+        n = eachchess.rotate_max
+        for x in range(m):
+            for y in range(n):
+                eachchess.change_to(x, y)
+                print("chess %d\t\t reverse %d\t\t rotate %d" % (i, x, y))
+                eachchess.plot_chess()

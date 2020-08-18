@@ -1,7 +1,29 @@
-import cv2
 
-a=cv2.VideoCapture("http://v.m.china.com.cn/media/video/20200813/15/0c1c4053cd2afc3854ee5d5f63ce718f.mp4")
-for _ in range(int(a.get(cv2.CAP_PROP_FRAME_COUNT))):
-    success,img=a.read()
-    cv2.imshow("test",img)
-    cv2.waitKey(0)
+from matplotlib import pyplot as plt
+from matplotlib.ticker import MultipleLocator
+import numpy as np
+
+# Two example plots
+fig = plt.figure()
+ax1 = fig.add_subplot(2,2,1)
+ax2 = fig.add_subplot(2,2,2)
+
+spacing = 0.5 # This can be your user specified spacing.
+minorLocator = MultipleLocator(spacing)
+ax1.plot(9 * np.random.rand(10))
+# Set minor tick locations.
+ax1.yaxis.set_minor_locator(minorLocator)
+ax1.xaxis.set_minor_locator(minorLocator)
+# Set grid to use minor tick locations.
+ax1.grid(which = 'minor')
+
+spacing = 1
+minorLocator = MultipleLocator(spacing)
+ax2.plot(9 * np.random.rand(10))
+# Set minor tick locations.
+ax2.yaxis.set_minor_locator(minorLocator)
+ax2.xaxis.set_minor_locator(minorLocator)
+# Set grid to use minor tick locations.
+ax2.grid(which = 'minor')
+
+plt.show()
