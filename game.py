@@ -39,7 +39,7 @@ class Game:
         return True
 
     def auto_move(self,player_series,first_flag=False):
-        # todo automatically move according to the learned policy
+        # todo training module and follow policy module.
         this_player=self.players[player_series]
         policy_set=this_player.get_policy_set(self.board,first_flag)
         policies=[]
@@ -56,7 +56,6 @@ class Game:
         return True
 
     def human_move(self,player_series,first_flag=False):
-        # todo human interact interface to move one step
         this_player=self.players[player_series]
         selected=-1
         while True:
