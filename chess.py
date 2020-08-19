@@ -11,7 +11,7 @@ class chess:
         self.rotate_max = 4
         self.reverse_max = 2
 
-    def __reverse(self):
+    def reverse(self):
         if self.reverse_max == 1:
             return False
         else:
@@ -19,7 +19,7 @@ class chess:
             self.reverse_flag = (self.reverse_flag + 1) % self.reverse_max
             return True
 
-    def __rotate(self):
+    def rotate(self):
         if self.rotate_max == 1:
             return False
         else:
@@ -34,15 +34,15 @@ class chess:
 
     def reset(self):
         for i in range(self.rotate_max - self.rotate_flag - 1):
-            self.__rotate()
+            self.rotate()
         for i in range(self.reverse_max - self.reverse_flag - 1):
-            self.__reverse()
+            self.reverse()
 
     def change_to(self, reverse_times=0, rotate_times=0):
         for i in range((reverse_times - self.reverse_flag) % self.reverse_max):
-            self.__reverse()
+            self.reverse()
         for i in range((rotate_times - self.rotate_flag) % self.rotate_max):
-            self.__rotate()
+            self.rotate()
 
     def plot_chess(self):
         fig, ax = plt.subplots()
@@ -62,6 +62,16 @@ class chess:
         plt.axis([-1,shape[1]+1,-1,shape[0]+1])
         plt.grid()
         plt.show()
+
+    def print(self):
+        shape=self.chess.shape
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                if self.chess[i,j]:
+                    print(1,end="")
+                else:
+                    print(0,end="")
+            print("\n",end="")
 
 
 class chess0(chess):
@@ -352,11 +362,13 @@ if __name__ == "__main__":
         chess7(), chess8(), chess9(), chess10(), chess11(), chess12(), chess13(),
         chess14(), chess15(), chess16(), chess17(), chess18(), chess19(), chess20()
     ]
-    for i, eachchess in enumerate(chesses):
-        m = eachchess.reverse_max
-        n = eachchess.rotate_max
-        for x in range(m):
-            for y in range(n):
-                eachchess.change_to(x, y)
-                print("chess %d\t\t reverse %d\t\t rotate %d" % (i, x, y))
-                eachchess.plot_chess()
+    # for i, eachchess in enumerate(chesses):
+    #     m = eachchess.reverse_max
+    #     n = eachchess.rotate_max
+    #     for x in range(m):
+    #         for y in range(n):
+    #             eachchess.change_to(x, y)
+    #             print("chess %d\t\t reverse %d\t\t rotate %d" % (i, x, y))
+    #             eachchess.print()
+    chesses[11].change_to(1,3)
+    chesses[11].print()

@@ -37,8 +37,10 @@ class Player:
         return policy_set
 
     def make_a_move(self, board: Board, chess_series, position_and_state=(0, 0, 0, 0), first_step=False):
-        self.chesses[chess_series].change_to(position_and_state[2], position_and_state[2])
-        if board.check_legal((position_and_state[0], position_and_state[1]), self.player_series_num,
+        if self.used[chess_series]:
+            return False
+        self.chesses[chess_series].change_to(position_and_state[0], position_and_state[1])
+        if board.check_legal((position_and_state[2], position_and_state[3]), self.player_series_num,
                              self.chesses[chess_series], first_step=first_step):
             self.used[chess_series] = True
             board.add_chess((position_and_state[2], position_and_state[3]), self.player_series_num,

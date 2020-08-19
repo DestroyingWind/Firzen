@@ -6,23 +6,30 @@ BOARD_SIZE = 20
 class Board:
     color={-1:"w",0:"r",1:"y",2:"b",3:"g"}
     def __init__(self):
-        self.base_board = np.ones([BOARD_SIZE, BOARD_SIZE]) * (-1)
+        self.base_board = np.ones([BOARD_SIZE, BOARD_SIZE],dtype=np.int8) * (-1)
         self.rotate_flag = 0
 
     def add_chess(self, position=(0, 0), player_series=0, this_chess=chess()):
         shape = this_chess.chess.shape
         for i in range(shape[0]):
             for j in range(shape[1]):
-                self.base_board[position[0] + i, position[1] + j] = player_series if this_chess.chess[i, j] else 0
+                self.base_board[position[0] + i, position[1] + j] = player_series if this_chess.chess[i, j] else -1
 
     def rotate(self):
         self.base_board = np.rot90(self.base_board, -1)
         self.rotate_flag += 1
         self.rotate_flag %= 4
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                if self.base_board[i,j]==-1:
+                    continue
+                else:
+                    self.base_board[i,j]-=1
+                    self.base_board[i,j]%=4
 
     def check_legal(self, position=(0, 0), player_series_num=0, this_chess=chess(), first_step=False):
         if first_step:
-            if this_chess.chess[0, 0]:
+            if this_chess.chess[0, 0] and position[0]==0 and position[1]==0:
                 return True
             else:
                 return False
@@ -58,6 +65,16 @@ class Board:
         else:
             return False
 
+    def count(self):
+        result=[0,0,0,0]
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                if self.base_board[i,j]==-1:
+                    continue
+                else:
+                    result[self.base_board[i,j]]+=1
+        return result
+
     def plot_board(self):
         fig=plt.figure()
         ax=fig.add_subplot(1,1,1)
@@ -75,10 +92,16 @@ class Board:
         plt.grid(which="major")
         plt.show()
 
+    def print(self):
+        shape=self.base_board.shape
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                print(self.base_board[i,j]+1,end="")
+            print("\n",end="")
 
     def reset(self):
         self.__init__()
 
 if __name__=="__main__":
     board=Board()
-    board.plot_board()
+    board.print()
