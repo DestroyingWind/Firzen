@@ -1,29 +1,12 @@
+class a:
+    def test1(self,test2):
+        print(test2(1))
 
-from matplotlib import pyplot as plt
-from matplotlib.ticker import MultipleLocator
-import numpy as np
+class b:
+    @staticmethod
+    def test2(z):
+        return z+1
 
-# Two example plots
-fig = plt.figure()
-ax1 = fig.add_subplot(2,2,1)
-ax2 = fig.add_subplot(2,2,2)
-
-spacing = 0.5 # This can be your user specified spacing.
-minorLocator = MultipleLocator(spacing)
-ax1.plot(9 * np.random.rand(10))
-# Set minor tick locations.
-ax1.yaxis.set_minor_locator(minorLocator)
-ax1.xaxis.set_minor_locator(minorLocator)
-# Set grid to use minor tick locations.
-ax1.grid(which = 'minor')
-
-spacing = 1
-minorLocator = MultipleLocator(spacing)
-ax2.plot(9 * np.random.rand(10))
-# Set minor tick locations.
-ax2.yaxis.set_minor_locator(minorLocator)
-ax2.xaxis.set_minor_locator(minorLocator)
-# Set grid to use minor tick locations.
-ax2.grid(which = 'minor')
-
-plt.show()
+x=a()
+y=b()
+x.test1(b.test2)

@@ -1,5 +1,6 @@
 from chess import *
 from board import Board, BOARD_SIZE
+from agent import Agent
 
 
 class Player:
@@ -14,6 +15,7 @@ class Player:
             False for _ in range(len(self.chesses))
         ]
         self.player_series_num = series_num
+        self.score=0
 
     def get_policy_set(self, board: Board, first_step=False):
         policy_set = []
@@ -45,10 +47,14 @@ class Player:
             self.used[chess_series] = True
             board.add_chess((position_and_state[2], position_and_state[3]), self.player_series_num,
                             self.chesses[chess_series])
+            self.score+=self.chesses[chess_series].count
             return True
         else:
             self.chesses[chess_series].reset()
             return False
+
+    def set_policy(self,agent:Agent()):
+        self.agent=agent
 
     def reset(self):
         for eachchess in self.chesses:
