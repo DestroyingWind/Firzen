@@ -13,7 +13,15 @@ class Board:
         shape = this_chess.chess.shape
         for i in range(shape[0]):
             for j in range(shape[1]):
-                self.base_board[position[0] + i, position[1] + j] = player_series if this_chess.chess[i, j] else -1
+                if this_chess.chess[i, j]:
+                    self.base_board[position[0] + i, position[1] + j] = player_series
+
+    def remove_chess(self, position=(0, 0),  this_chess=chess()):
+        shape = this_chess.chess.shape
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                if this_chess.chess[i, j]:
+                    self.base_board[position[0] + i, position[1] + j] = -1
 
     def rotate(self):
         self.base_board = np.rot90(self.base_board, -1)

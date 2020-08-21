@@ -2,6 +2,7 @@ import numpy as np
 import random
 from board import Board
 from player import Player
+from agent import Agent
 
 
 class Game:
@@ -44,8 +45,7 @@ class Game:
         for i in range(4):
             self.active[i] = True
 
-    def auto_move(self, player_series, first_flag=False):
-        # todo training module and follow policy module.
+    def auto_move(self, player_series, first_flag=False,agent=Agent()):
         this_player = self.players[player_series]
         policy_set = this_player.get_policy_set(self.board, first_flag)
         policies = []
@@ -154,3 +154,44 @@ class Game:
             else:
                 print("illegal input!!\nplease choose one instruction according to the documents.")
         return False
+
+    def gen_training_data(self,quantity=100,agent=Agent()):
+        board_list = [[] for _ in range(4)]
+        action_list = [[] for _ in range(4)]
+        reward_list = [[] for _ in range(4)]
+        for i in range(quantity):
+            run_flag = True
+            first_flag = True
+            active=[True for _ in range(4)]
+            while run_flag:
+                for i in range(4):
+                    if not active[i]:
+                        continue
+                    policy_set = self.players[i].get_policy_set(self.board, first_flag)
+                    policy_set=self.policy_set_convert(policy_set)
+                    if policy_set.__len__()==0:
+                        active[i]=False
+                        continue
+                    board_list[i].append(self.board.base_board.copy())
+                    action=agent.choose_action(self.board,policy_set)
+                    action=policy_set[action]
+                    self.players[i].make_a_move(self.board, action[0], action[1:], first_flag)
+                    action_list[i].append(self.board.base_board.copy())
+                    self.board.rotate()
+                    reward_list[i].append(self.players[i].chesses[action[0]].count)
+                if sum(active) == 0:
+                    run_flag = False
+                if first_flag:
+                    first_flag = False
+        return sum(board_list,[]), sum(action_list,[]),sum(reward_list,[])
+        # return board_list,action_list,reward_list
+
+
+    @staticmethod
+    def policy_set_convert(policy_set):
+        policies = []
+        for x in range(policy_set.__len__()):
+            for y in range(policy_set[x].__len__()):
+                policies.append(
+                    (x, policy_set[x][y][0], policy_set[x][y][1], policy_set[x][y][2], policy_set[x][y][3]))
+        return policies

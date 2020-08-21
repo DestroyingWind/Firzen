@@ -1,12 +1,9 @@
-class a:
-    def test1(self,test2):
-        print(test2(1))
+import nn_model
+import torch
 
-class b:
-    @staticmethod
-    def test2(z):
-        return z+1
 
-x=a()
-y=b()
-x.test1(b.test2)
+nm=nn_model.identicle__nn()
+
+random_data=torch.rand(1,7,20,20,)
+result=nm(random_data)
+print(result)
