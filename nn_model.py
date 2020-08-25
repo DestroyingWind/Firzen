@@ -2,12 +2,11 @@ import torch
 import torchvision.models as models
 import torch.nn as nn
 
-resnet18 = models.resnet18()
+device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
-class identicle__nn(nn.Module):
+class Identicle_nn(nn.Module):
     def __init__(self):
-        super(identicle__nn, self).__init__()
+        super(Identicle_nn, self).__init__()
         self.conv1 = nn.Conv2d(8, 64, 5, 1)
         self.conv2 = nn.Conv2d(64, 128, 3, 1)
         self.conv3 = nn.Conv2d(128, 256, 3, 1)
@@ -27,3 +26,8 @@ class identicle__nn(nn.Module):
         x = self.fc1(x)  # batch_size*1024
         x = self.fc2(x)  # batch_size*1
         return x
+
+nn_model=Identicle_nn().to(device)
+
+criterion=nn.CrossEntropyLoss()
+optimizer=torch.optim.Adam(nn_model.parameters())
