@@ -3,6 +3,8 @@ import random
 from board import Board
 from player import Player
 from agent import Agent
+from agent import Gamma,Alpha
+import time
 
 
 class Game:
@@ -167,22 +169,47 @@ class Game:
                 for i in range(4):
                     if not active[i]:
                         continue
+                    time0=time.time()
                     policy_set = self.players[i].get_policy_set(self.board, first_flag)
                     policy_set=self.policy_set_convert(policy_set)
                     if policy_set.__len__()==0:
                         active[i]=False
                         continue
+                    time1=time.time()
+                    print("get policies:",time1-time0)
                     board_list[i].append(self.board.base_board.copy())
+                    time0=time.time()
                     action=agent.choose_action(self.board,policy_set)
+                    action,QSA=action
+                    QSA=float(QSA)
                     action=policy_set[action]
                     self.players[i].make_a_move(self.board, action[0], action[1:], first_flag)
+                    time1=time.time()
+                    print("choose action:",time1-time0)
                     action_list[i].append(self.board.base_board.copy())
+                    R=self.players[i].chesses[action[0]].count
+                    # here calculate the max Q(s_t+1,A)
+                    time0=time.time()
+                    next_policy_set=self.players[i].get_policy_set(self.board,first_step=False)
+                    next_policy_set=self.policy_set_convert(next_policy_set)
+                    if next_policy_set.__len__()==0:
+                        QS1A=0
+                    else:
+                        V_list=[]
+                        for eachpolicy in next_policy_set:
+                            V_list.append(agent.value_function(self.board,eachpolicy))
+                        QS1A=max(V_list)
+                    time1=time.time()
+                    print("future action:",time1-time0)
+                    reward_list[i].append(QSA+Alpha*(R+Gamma*QS1A-QSA))
                     self.board.rotate()
-                    reward_list[i].append(self.players[i].chesses[action[0]].count)
                 if sum(active) == 0:
                     run_flag = False
                 if first_flag:
                     first_flag = False
+            score=[self.players[i].score for i in range(4)]
+            print(score)
+            self.reset()
         return sum(board_list,[]), sum(action_list,[]),sum(reward_list,[])
         # return board_list,action_list,reward_list
 

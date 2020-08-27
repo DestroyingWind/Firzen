@@ -1,9 +1,15 @@
-import nn_model
 import torch
+from torch.utils.data import IterableDataset
+import numpy as np
+from nn_model import *
+from agent import Agent
+from board import Board
 
-
-nm=nn_model.identicle__nn()
-
-random_data=torch.rand(1,7,20,20,)
-result=nm(random_data)
-print(result)
+if __name__=="__main__":
+    # agent0=Agent()
+    # agent0.nn.load_state_dict(torch.load("model.pkl"))
+    # print(agent0.value_function(Board()))
+    #
+    # agent1 = Agent()
+    # print(agent1.value_function(Board()))
+    print("test")
