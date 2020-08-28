@@ -7,7 +7,7 @@ from agent import Agent
 
 stages=100
 epoches=100
-old_version=None
+old_version=False
 
 if __name__=="__main__":
     newgame=game.Game()
