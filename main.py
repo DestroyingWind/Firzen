@@ -1,3 +1,5 @@
+from tensorboardX import SummaryWriter
+
 import game
 from nn_model import *
 import os
@@ -6,13 +8,14 @@ import torch
 from agent import Agent
 
 stages=100
-epoches=100
+epoches=1000
 old_version=False
 
 if __name__=="__main__":
     newgame=game.Game()
     # newgame.one_game(human_player=(False,False,False,False))
     model=Identicle_nn().to(device)
+    writer=SummaryWriter(log_dir="summary")
     version=[]
     for eachfile in os.listdir("checkpoints"):
         if eachfile[:5]=="model" and eachfile[-4:]==".pkl":
@@ -29,6 +32,10 @@ if __name__=="__main__":
         agent.epsilon=(1/(stage+1))
         print("epsilon is set to %.3f" % (agent.epsilon))
         datas=newgame.gen_training_data(epoches,agent)
+        scores=datas[3]
+        datas=datas[:3]
+        for i,score in enumerate(scores):
+            writer.add_scalar("scores",score,i+stage*epoches+1)
         for i,a in enumerate(datas):
             b=np.stack(a)
             np.save(file=os.path.join("data",str(i)+".npy"),arr=b,allow_pickle=True)

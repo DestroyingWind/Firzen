@@ -161,6 +161,7 @@ class Game:
         board_list = [[] for _ in range(4)]
         action_list = [[] for _ in range(4)]
         reward_list = [[] for _ in range(4)]
+        score=[]
         for i in range(quantity):
             run_flag = True
             first_flag = True
@@ -207,10 +208,10 @@ class Game:
                     run_flag = False
                 if first_flag:
                     first_flag = False
-            score=[self.players[i].score for i in range(4)]
-            print(score)
+            this_score=[self.players[i].score for i in range(4)]
+            score.append(sum(this_score))
             self.reset()
-        return sum(board_list,[]), sum(action_list,[]),sum(reward_list,[])
+        return sum(board_list,[]), sum(action_list,[]),sum(reward_list,[]),score
         # return board_list,action_list,reward_list
 
 
